@@ -11,6 +11,7 @@
 	// 117 = O
 	// 240 = caracter invisivel
 	// tabela ascii https://www.matematica.pt/util/resumos/tabela-ascii.php
+	// gotoxy(10,5) colunas / linhas
 	
 char player_one[20];
 char player_two[20];
