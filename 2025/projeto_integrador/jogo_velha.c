@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#define SIZE 3
 	// setlocale(LC_ALL, "Portuguese")
 	// int aux;
 	// for(aux = 1; aux <= 20; aux++){
@@ -15,9 +15,11 @@
 char player_one[20];
 char player_two[20];
 
+
 char verify_winner(char tabuleiro[SIZE][SIZE]) {
+	int i,j;
     // Verifica linhas e colunas
-    for (int i = 0; i < SIZE; i++) {
+    for (i = 0; i < SIZE; i++) {
         if (tabuleiro[i][0] != ' ' && tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2]) {
             return tabuleiro[i][0];
         }
@@ -35,15 +37,15 @@ char verify_winner(char tabuleiro[SIZE][SIZE]) {
     }
 
     // Verifica se há espaços vazios para continuar o jogo
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
+    for (i = 0; i < SIZE; i++) {
+        for (j = 0; j < SIZE; j++) {
             if (tabuleiro[i][j] == ' ') {
                 return 0;
             }
         }
     }
 
-    return 1;
+    return "E";
 }
 
 void template_line(int aux){
@@ -82,7 +84,7 @@ void table_template(int pri){
 }
 
 
-void start_game(void){
+void start_game(){
 	system("cls");
 	table_template(88);
 	printf("                     Digite o nome do player 1:\n");
