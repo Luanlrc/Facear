@@ -1,0 +1,130 @@
+Nível Facil
+
+1. O que e uma variavel em linguagem C? Qual a sua importancia na construcao de programas?
+R:Variaveis representam um espaço ou enredeço na memoria do computador. É essencial para 
+o desenvolvimento de sistemas simples ou complesxos, para armazenar e manipular valores.
+
+2. Explique a diferenc¸a entre os tipos de dados int, float e char em C.
+R: Em c a declaração int refere-se ao tipo de variavel "inteiro", armazena 
+apenas numeros inteiros positivos ou negativos, a representação mais 
+comum em C é %d, aceita um numero inteiro comum
+
+3. Qual a finalidade dos comandos scanf() e printf()? De exemplos de suas aplicacoes.
+R: Tanto o printf quanto o scanf são funções responsáveis por manipular uma variavel,
+ou seja, acessar um espaço da memoria do computador. A diferença entre eles é que o scanf
+tem a função de LER um dado, receber um input e armazear em uma variavel. Ja o printf,
+tem a função de output, ele sempre exibira o valores em forma de caracteres, vindo eles de uma variavel ou não
+Exemplos:
+
+void main(){
+    int num;
+    printf("digite um numero inteiro:\n");  # exemplo de printf que exibe uma valor qualquer.
+    scanf("%d", &num);  # exemplo de scanf que recebe e armaze o valor digitado em uma varaivel "num"
+    printf("%d", num)  #exemplo de prinf que exibe o valor de uma variavel
+}
+
+
+4. O que e um operador relacional? Cite exemplos e sua utilidade nos programas.
+R: Um operador racional é utilizado para comparar dois valores, sua comparação em
+programação, sempre resultara em um valor boleano como VERDADEIRO ou FALSO.
+São eles os exemplos:
+
+==	Igual 
+!=	Diferente de  --- a != b	VERDADEIRO (se for diferente)
+>	Maior que  --- a > b	VERDADEIRO (se a maior que b)
+<	Menor que  --- a < b	VERDADEIRO (se a menor que b)
+>=	Maior ou igual a  --- a >= b	VERDADEIRO (se a ≥ b)
+<=	Menor ou igual a  --- a <= b	VERDADEIRO (se a ≤ b)
+
+
+5. Qual e a funcao da estrutura condicional  if em C? Explique com um exemplo simples.
+R: A estrutura condicional if tem como função direcionar o codigo, podendo fazer validações
+para previnir erros, logicas especificas e regras de negocio.
+
+if funcionario_demitido então
+    não tem permissão para acessar
+
+Neste caso temos a validação de se um funcionario esta ainda trabalhando na empresa ou não,
+oque resulta se o mesmo tem acesso ou não a algum tipo de informação ou sistema
+
+
+Níıvel Intermediario
+
+6. Qual a diferenca entre os comandos while, do-while e for? Em que situacoes cada um e mais indicado?
+R: As funções mensionadas tem como objetivo executar um bloco de codigo diversas vezes, elas se diferenciam em:
+A função while executa as repetições a partir de uma condição, indicado para laços com numero de repetições indefinidas
+A função Do While executa o bloco pelo menos uma vez antes de verificar sua condição, indicado para menu de opções por exemplo, onde a entrada e obrigatória
+Ja o For tem uma estrutura mais completa, sendo necessario passar inicio, condição e incremento, indicado para laços de repetições com valor fixo
+
+7. O que sao operadores logicos em C? Cite exemplos de sua aplicação.
+R: São utilizados para combinar condições ou restrições, em momentos onde é preciso comparar
+mais de uma condição, por exemplo:
+
+operador OU - if congelado OU estragado -> nao servir
+operador E - if homem E idade igual a 18 -> servico militar obrigatorio
+operador NOT - if NOT mulher E idade igual a 18 -> servico militar obrigatorio
+
+8. Explique a diferenca entre variaveis locais e variaveis globais em C. Quais cuidados devem ser tomados ao usa-las?
+R:    Variaveis locais são definidas dentro de um escopo de codigo especifico
+e só podemos utiliza-las dentro desse mesmo escopo.
+    As Variaveis globais são declaradas sem um escopo especifico, sendo possível acessalas de qualquer lugar do codigo, dentro de qualquer função.
+    Precisamos cuidar pois variaveis globais ainda podem ter o seu valor alterado, oque se nao gerenciado, pode vir a 
+    dar erros em funções que esperavam um valor ou tipo especifico e outra parte do codigo alterou o valor da mesma
+
+9. Como funciona a estrutura switch-case? Em quais situacoes e vantajoso utiliza-la?
+R: A função switch-case nos permite executador blocos de codigo com base no valor de uma variavel
+As vantagens de utilizar é que podemos substituir if-elses encadeados e deixa o codigo mais organizado e legivel
+
+10. O que sao operadores bit a bit? D e exemplos de sua aplicacao pratica em problemas computacionais
+R: Operadores bit a bit operam diretamente nos bits dos valores. Fazem a manipulação de bits, compactação de dados, controle de hardware, entre outras.
+Seus principais operadores são:
+
+& (AND)
+| (OR)
+^ (XOR)
+~ (NOT)
+<< (deslocamento à esquerda)
+>> (deslocamento à direita)
+
+Exemplo:
+5 & 3 → 0101 & 0011 = 0001 → Resultado: 1
+
+Nivel Dificil
+
+11. Como funciona a conversao de tipos (type casting) em C? Explique com exemplos os riscos e beneficios.
+R:Type casting é a conversão de um tipo de dado para outro, forçando o compilador a tratar um valor como outro tipo.
+Exemplo:
+int x = 5, y = 2;
+float resultado = (float)x / y;
+resultado = 2.5 # neste caso convertemos um int para float onde a saida seria 2, mas como convertemos para float a saida foi alterada
+
+Entre os riscos podemos encontrar a perda de dados e comportamentos inesperados
+
+12. O que sao constantes em C e quais sao as diferencas entre #define e const?
+R:Constantes são variaveis quem mantem o seu valor inalterado durante a execução do codigo
+As principais diferença entre elas são:
+#define nao possui um tipo definido ja uma const sim
+#define não respeita escopo, sendo possivel acessala globalmente, ja a const possui escopo definido sendo uma variavel local.
+
+13. Explique o conceito de complexidade algoritmica e discuta o impacto de laços aninhados no desempenho do programa.
+R:    Complexidade algorítmica mede o desempenho de um algoritmo em relação ao crescimento da entrada. 
+    Laços aninhados aumentam o tempo de execução gradualmente conforme a quantidades de dados a serem processados.
+    Isso pode prejudicar o desempenho do codigo, consumo de processamento com grandes volumes de dados.
+
+14. Analise o seguinte trecho de codigo e explique o seu comportamento:
+R:int a = 5, b = 3;
+printf("%d", a++ + ++b);
+
+O trecho em questão define duas variaveis "a" e "b" do tipo inteiro com valores de 5 e 3
+em seguido utiliza-se a função printf para exibir um dado na tela
+o valor exibido vem do calculo ((5+1)+(1+3)) onde a saida para o usuario é 9
+a explicação de porque a saida nao ser 10 é que o a++ é um pós-incremento onde a sera 6 apenas depois da execução
+ja o ++b é um pré-incremento onde o valor sera alterado para 4 antes da execução
+
+
+
+15. Comente sobre as boas praticas na organizacao e documentacao de programas escritos em C. Por que isso e importante em projetos maiores?
+R:
+Boas práticas incluem usar nomes de variáveis claros, comentar trechos importantes, dividir o código em funções e arquivos. 
+Além de manter a indentação organizada. Isso é essencial em projetos maiores porque facilita a manutenção, 
+evita erros, melhora a colaboração e torna o código mais profissional e legivel.
