@@ -26,7 +26,7 @@ void gotoxy(int x, int y){
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-char verify_winner(char tabuleiro[SIZE][SIZE]) {
+int verify_winner() { //char tabuleiro[SIZE][SIZE]
 	int i,j;
     // Verifica linhas e colunas
 
@@ -62,7 +62,7 @@ char verify_winner(char tabuleiro[SIZE][SIZE]) {
         }
     }
 
-    return "E";
+    return 0;
 }
 
 // Funções de template de tela
