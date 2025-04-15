@@ -13,6 +13,7 @@
 #include <windows.h>
 #include <string.h>
 #define WIDTH 50
+#define SIZE 3
 
 char player_one[20] = "Nao definido";
 char player_two[20] = "Nao definido";
@@ -23,6 +24,45 @@ void gotoxy(int x, int y){
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+char verify_winner(char tabuleiro[SIZE][SIZE]) {
+	int i,j;
+    // Verifica linhas e colunas
+
+    char tabuleiro[SIZE][SIZE] = {
+		{'X', 'O', 'X'},
+		{'O', 'X', 'O'},
+		{'O', 'X', 'X'}
+	};
+
+    for (i = 0; i < SIZE; i++) {
+        if (tabuleiro[i][0] != ' ' && tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2]) {
+            return tabuleiro[i][0];
+        }
+        if (tabuleiro[0][i] != ' ' && tabuleiro[0][i] == tabuleiro[1][i] && tabuleiro[1][i] == tabuleiro[2][i]) {
+            return tabuleiro[0][i];
+        }
+    }
+
+    // Verifica diagonais
+    if (tabuleiro[0][0] != ' ' && tabuleiro[0][0] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][2]) {
+        return tabuleiro[0][0];
+    }
+    if (tabuleiro[0][2] != ' ' && tabuleiro[0][2] == tabuleiro[1][1] && tabuleiro[1][1] == tabuleiro[2][0]) {
+        return tabuleiro[0][2];
+    }
+
+    // Verifica se há espaços vazios para continuar o jogo
+    for (i = 0; i < SIZE; i++) {
+        for (j = 0; j < SIZE; j++) {
+            if (tabuleiro[i][j] == ' ') {
+                return 0;
+            }
+        }
+    }
+
+    return "E";
 }
 
 // Funções de template de tela
@@ -42,7 +82,7 @@ void render_line_down(){
 
 void render_body(){
     int i, j;
-    for(i = 1; i <= 13; i++){
+    for(i = 1; i <= 17; i++){
         printf("%c", 186); // linha vertical esquerda
         for(j = 1; j <= WIDTH; j++) printf(" ");
         printf("%c\n", 186); // linha vertical direita
@@ -50,7 +90,6 @@ void render_body(){
 }
 
 void table_template(){
-    int i;
     render_line_up();
     render_body();
     render_line_down();
