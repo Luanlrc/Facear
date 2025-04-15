@@ -28,14 +28,14 @@ void gotoxy(int x, int y){
 
 int verify_winner() { //char tabuleiro[SIZE][SIZE]
 	int i,j;
-    // Verifica linhas e colunas
-
+    
     char tabuleiro[SIZE][SIZE] = {
-		{'X', 'O', 'X'},
+        {'X', 'O', 'X'},
 		{'O', 'X', 'O'},
 		{'O', 'X', 'X'}
 	};
-
+    
+    // Verifica linhas e colunas
     for (i = 0; i < SIZE; i++) {
         if (tabuleiro[i][0] != ' ' && tabuleiro[i][0] == tabuleiro[i][1] && tabuleiro[i][1] == tabuleiro[i][2]) {
             return tabuleiro[i][0];
