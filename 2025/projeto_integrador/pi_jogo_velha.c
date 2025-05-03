@@ -7,11 +7,16 @@
 // 88 = X
 // 117 = O
 // 240 = caracter invisivel
+
+// Proxima entrega é para fazer
+// Sorteio de jogada do computador com random
+// Criar logica de vez do jogador, quem esta jogando no momento
 	
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 #include <string.h>
+#include <time.h> // Responsavel por manipulação de timesleep e math.random com rand() e Sleep() o windows.h tambem faz porem so ira rodar no windows
 #define WIDTH 50
 #define HEIGHT 20
 #define SIZE 3
