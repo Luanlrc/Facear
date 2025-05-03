@@ -13,10 +13,34 @@
 #include <windows.h>
 #include <string.h>
 #define WIDTH 50
+#define HEIGHT 20
 #define SIZE 3
+#define XX 88
+#define OO 79
+#define LHORI 205  // ═
+#define LVERT 186  // ║
+#define CROSS 206  // ╬
+#define INIT_HORI 17
+#define INIT_VERT 6
 
 char player_one[20] = "Nao definido";
 char player_two[20] = "Nao definido";
+typedef struct {
+    int linha;
+    int coluna;
+} Coordenada;
+
+Coordenada mapa_posicoes[9] = {
+    {0, 0}, // 1
+    {0, 1}, // 2
+    {0, 2}, // 3
+    {1, 0}, // 4
+    {1, 1}, // 5
+    {1, 2}, // 6
+    {2, 0}, // 7
+    {2, 1}, // 8
+    {2, 2}  // 9
+};
 
 // Função para posicionar o cursor na tela
 void gotoxy(int x, int y){
@@ -25,6 +49,7 @@ void gotoxy(int x, int y){
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
+// Funções de regra de negocio
 
 int verify_winner() { //char tabuleiro[SIZE][SIZE]
 	int i,j;
@@ -65,40 +90,86 @@ int verify_winner() { //char tabuleiro[SIZE][SIZE]
     return 0;
 }
 
+int generate_random_play() {
+    return rand() % SIZE; // retorna 0, 1 ou 2
+}
+
 // Funções de template de tela
-void render_line_up(){
+void layout_game_render_line_up(){
     int i;
     printf("%c", 201); // canto superior esquerdo
     for(i = 1; i <= WIDTH; i++) printf("%c", 205); // linha horizontal
     printf("%c\n", 187); // canto superior direito
 }
 
-void render_line_down(){
+void layout_game_render_line_down(){
     int i;
     printf("%c", 200); // canto inferior esquerdo
     for(i = 1; i <= WIDTH; i++) printf("%c", 205); // linha horizontal
     printf("%c\n", 188); // canto inferior direito
 }
 
-void render_body(){
+void layout_game_render_body(){
     int i, j;
-    for(i = 1; i <= 17; i++){
+    for(i = 1; i <= HEIGHT; i++){
         printf("%c", 186); // linha vertical esquerda
         for(j = 1; j <= WIDTH; j++) printf(" ");
         printf("%c\n", 186); // linha vertical direita
     }
 }
 
-void table_template(){
-    render_line_up();
-    render_body();
-    render_line_down();
+void layout_game_template(){
+    layout_game_render_line_up();
+    layout_game_render_body();
+    layout_game_render_line_down();
+}
+
+// funções de renderização do tabuleiro
+
+void table_template(char tabuleiro[SIZE][SIZE]) {
+    system("cls");
+    layout_game_template();
+    gotoxy(10, 2); printf("Tabuleiro do Jogo");
+    render_table_game();
+    render_simbols_table(tabuleiro);
+}
+
+void init_empty_table(char tabuleiro[SIZE][SIZE]){
+    for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+            tabuleiro[i][j] = ' ';
+}
+
+void render_table_game(){
+    for (int i = 0; i < SIZE * 2 - 1; i++) {
+        gotoxy(INIT_HORI, INIT_VERT + i);
+        for (int j = 0; j < SIZE; j++) {
+            if (i % 2 == 0) {
+                printf("   ");
+                if (j < SIZE - 1) printf("%c", LVERT);
+            } else {
+                printf("%c%c%c", LHORI, LHORI, LHORI);
+                if (j < SIZE - 1) printf("%c", CROSS);
+            }
+        }
+    }
+}
+
+void render_simbols_table(char tabuleiro[SIZE][SIZE]){
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            int x = INIT_HORI + j * 4 + 1; // deslocamento horizontal para centro
+            int y = INIT_VERT + i * 2;     // linha de conteúdo
+            gotoxy(x, y);
+            printf("%c", tabuleiro[i][j]);
+        }
+    }
 }
 
 // Telas
 void tela_login(){
     system("cls");
-    table_template();
+    layout_game_template();
     gotoxy(10, 2); printf("Login de Jogador");
     gotoxy(10, 4); printf("Digite seu nome:");
     gotoxy(10, 6); printf("> ");
@@ -107,7 +178,7 @@ void tela_login(){
 
 void tela_cadastro(){
     system("cls");
-    table_template();
+    layout_game_template();
     gotoxy(10, 2); printf("Cadastro de Jogador");
     gotoxy(10, 4); printf("Nome do Jogador 1: ");
     scanf("%19s", player_one);
@@ -117,7 +188,7 @@ void tela_cadastro(){
 
 void tela_ranking(){
     system("cls");
-    table_template();
+    layout_game_template();
     gotoxy(10, 2); printf("Ranking de Jogadores");
     gotoxy(10, 4); printf("1. Fulano - 10 pts");
     gotoxy(10, 5); printf("2. Ciclano - 8 pts");
@@ -127,7 +198,7 @@ void tela_ranking(){
 
 void tela_jogar(){
     system("cls");
-    table_template();
+    layout_game_template();
     gotoxy(10, 2); printf("Tela de Jogo");
     gotoxy(10, 4); printf("Tabuleiro aqui futuramente.");
     getchar(); getchar();
@@ -135,7 +206,7 @@ void tela_jogar(){
 
 void tela_configuracoes(){
     system("cls");
-    table_template();
+    layout_game_template();
     gotoxy(10, 2); printf("Configuracoes");
     gotoxy(10, 4); printf("1 - Som: Ativado");
     gotoxy(10, 5); printf("2 - Dificuldade: Facil");
@@ -144,7 +215,7 @@ void tela_configuracoes(){
 
 void tela_carregar(){
     system("cls");
-    table_template();
+    layout_game_template();
     gotoxy(10, 2); printf("Carregar Jogo");
     gotoxy(10, 4); printf("1 - Save Slot 1");
     gotoxy(10, 5); printf("2 - Save Slot 2");
@@ -153,7 +224,7 @@ void tela_carregar(){
 
 void tela_salvar(){
     system("cls");
-    table_template();
+    layout_game_template();
     gotoxy(10, 2); printf("Salvar Jogo");
     gotoxy(10, 4); printf("Jogo salvo com sucesso!");
     getchar(); getchar();
@@ -164,7 +235,7 @@ void menu_principal(){
     int opcao;
     do {
         system("cls");
-        table_template();
+        layout_game_template();
         gotoxy(10, 2);  printf("Menu Principal");
         gotoxy(10, 4);  printf("1 - Login");
         gotoxy(10, 5);  printf("2 - Cadastro de Jogador");
@@ -174,10 +245,11 @@ void menu_principal(){
         gotoxy(10, 9);  printf("6 - Carregar Jogo");
         gotoxy(10,10);  printf("7 - Salvar Jogo");
         gotoxy(10,11);  printf("8 - Salvar e Sair");
-        gotoxy(10,12);  printf("0 - Sair do Jogo");
-        gotoxy(10,14);  printf("Jogador 1: %s", player_one);
-        gotoxy(10,15);  printf("Jogador 2: %s", player_two);
-        gotoxy(10,17);  printf("Escolha uma opcao: ");
+        gotoxy(10,12);  printf("9 - Jogar contra si mesmo");
+        gotoxy(10,13);  printf("0 - Sair do Jogo");
+        gotoxy(10,15);  printf("Jogador 1: %s", player_one);
+        gotoxy(10,16);  printf("Jogador 2: %s", player_two);
+        gotoxy(10,18);  printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -191,15 +263,16 @@ void menu_principal(){
             case 8:
                 tela_salvar();
                 system("cls");
-                table_template();
+                layout_game_template();
                 gotoxy(10, 6); printf("Jogo salvo com sucesso!");
                 gotoxy(10, 8); printf("Saindo...");
                 Sleep(1500); // espera para mostrar a mensagem
                 exit(0);
                 break;
+            case 9: play_with_yourself(); break;
             case 0:
                 system("cls");
-                table_template();
+                layout_game_template();
                 gotoxy(10, 6); printf("Saindo do jogo...");
                 Sleep(1000);
                 exit(0);
@@ -211,7 +284,58 @@ void menu_principal(){
     } while(opcao != 0);
 }
 
+
+
+void play_with_yourself() {
+    char tabuleiro[SIZE][SIZE];
+    int jogadas = 0;
+    int jogada = XX; // começa com 'X' (88)
+
+    // Inicializar tabuleiro
+    init_empty_table(tabuleiro);
+
+    while (jogadas < SIZE * SIZE) {
+        int pos;
+        Coordenada coord;
+
+        // Exibe o tabuleiro com layout
+        table_template(tabuleiro);
+
+        // Mensagem da vez do jogador
+        gotoxy(10, 12); printf("Vez do jogador %c (%d)", (char)jogada, jogada);
+        gotoxy(10, 14); printf("Escolha uma posicao (1 a 9): ");
+        gotoxy(42, 14); scanf("%d", &pos);
+
+        // Valida entrada
+        if (pos < 1 || pos > 9) {
+            gotoxy(10, 16); printf("Posicao invalida! Pressione Enter...");
+            getchar(); getchar();
+            continue;
+        }
+
+        coord = mapa_posicoes[pos - 1];
+
+        if (tabuleiro[coord.linha][coord.coluna] != ' ') {
+            gotoxy(10, 16); printf("Posicao ocupada! Pressione Enter...");
+            getchar(); getchar();
+            continue;
+        }
+
+        // Aplica jogada e alterna
+        tabuleiro[coord.linha][coord.coluna] = (char)jogada;
+        jogada = (jogada == XX) ? OO : XX;
+        jogadas++;
+    }
+
+    // Mostra tabuleiro final
+    table_template(tabuleiro);
+    gotoxy(10, 16); printf("Jogo encerrado.");
+    gotoxy(10, 17); printf("Todas as casas foram preenchidas!");
+    getchar(); getchar();
+}
+
 int main() {
+    srand(time(NULL));
     menu_principal();
     return 0;
 }
