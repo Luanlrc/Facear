@@ -250,11 +250,12 @@ void menu_principal(){
         gotoxy(10, 9);  printf("6 - Carregar Jogo");
         gotoxy(10,10);  printf("7 - Salvar Jogo");
         gotoxy(10,11);  printf("8 - Salvar e Sair");
-        gotoxy(10,12);  printf("9 - Jogar contra si mesmo");
-        gotoxy(10,13);  printf("0 - Sair do Jogo");
-        gotoxy(10,15);  printf("Jogador 1: %s", player_one);
-        gotoxy(10,16);  printf("Jogador 2: %s", player_two);
-        gotoxy(10,18);  printf("Escolha uma opcao: ");
+        gotoxy(10,12);  printf("9 - Jogar com amigo");
+        gotoxy(10,13);  printf("10 - Jogar contra computador");
+        gotoxy(10,14);  printf("0 - Sair do Jogo");
+        gotoxy(10,16);  printf("Jogador 1: %s", player_one);
+        gotoxy(10,17);  printf("Jogador 2: %s", player_two);
+        gotoxy(10,19);  printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -271,10 +272,11 @@ void menu_principal(){
                 layout_game_template();
                 gotoxy(10, 6); printf("Jogo salvo com sucesso!");
                 gotoxy(10, 8); printf("Saindo...");
-                Sleep(1500); // espera para mostrar a mensagem
+                Sleep(1500);
                 exit(0);
                 break;
-            case 9: play_with_yourself(); break;
+            case 9: play_with_friend(); break;
+            case 10: play_with_computer(); break;
             case 0:
                 system("cls");
                 layout_game_template();
@@ -291,27 +293,23 @@ void menu_principal(){
 
 
 
-void play_with_yourself() {
+void play_with_friend() {
     char tabuleiro[SIZE][SIZE];
     int jogadas = 0;
-    int jogada = XX; // começa com 'X' (88)
+    int jogada = XX;
 
-    // Inicializar tabuleiro
     init_empty_table(tabuleiro);
 
     while (jogadas < SIZE * SIZE) {
         int pos;
         Coordenada coord;
 
-        // Exibe o tabuleiro com layout
         table_template(tabuleiro);
 
-        // Mensagem da vez do jogador
         gotoxy(10, 12); printf("Vez do jogador %c (%d)", (char)jogada, jogada);
         gotoxy(10, 14); printf("Escolha uma posicao (1 a 9): ");
         gotoxy(42, 14); scanf("%d", &pos);
 
-        // Valida entrada
         if (pos < 1 || pos > 9) {
             gotoxy(10, 16); printf("Posicao invalida! Pressione Enter...");
             getchar(); getchar();
@@ -326,13 +324,65 @@ void play_with_yourself() {
             continue;
         }
 
-        // Aplica jogada e alterna
         tabuleiro[coord.linha][coord.coluna] = (char)jogada;
         jogada = (jogada == XX) ? OO : XX;
         jogadas++;
     }
 
-    // Mostra tabuleiro final
+    table_template(tabuleiro);
+    gotoxy(10, 16); printf("Jogo encerrado.");
+    gotoxy(10, 17); printf("Todas as casas foram preenchidas!");
+    getchar(); getchar();
+}
+
+void play_with_computer() {
+    char tabuleiro[SIZE][SIZE];
+    int jogadas = 0;
+    int jogada = XX;
+    int is_player_turn = 1;
+    init_empty_table(tabuleiro);
+
+    while (jogadas < SIZE * SIZE) {
+        Coordenada coord;
+        int pos;
+
+        table_template(tabuleiro);
+
+        if (is_player_turn) {
+            gotoxy(10, 12); printf("Sua vez (jogador %c)", (char)jogada);
+            gotoxy(10, 14); printf("Escolha uma posicao (1 a 9): ");
+            gotoxy(42, 14); scanf("%d", &pos);
+
+            if (pos < 1 || pos > 9) {
+                gotoxy(10, 16); printf("Posicao invalida! Pressione Enter...");
+                getchar(); getchar();
+                continue;
+            }
+
+            coord = mapa_posicoes[pos - 1];
+
+            if (tabuleiro[coord.linha][coord.coluna] != ' ') {
+                gotoxy(10, 16); printf("Posicao ocupada! Pressione Enter...");
+                getchar(); getchar();
+                continue;
+            }
+        } else {
+            gotoxy(10, 12); printf("Vez do computador (%c)", (char)jogada);
+            Sleep(2000);
+
+            do {
+                int linha = generate_random_play();
+                int coluna = generate_random_play();
+                coord.linha = linha;
+                coord.coluna = coluna;
+            } while (tabuleiro[coord.linha][coord.coluna] != ' ');
+        }
+        tabuleiro[coord.linha][coord.coluna] = (char)jogada;
+        jogadas++;
+        jogada = (jogada == XX) ? OO : XX;
+        is_player_turn = !is_player_turn;
+    }
+   
     table_template(tabuleiro);
     gotoxy(10, 16); printf("Jogo encerrado.");
     gotoxy(10, 17); printf("Todas as casas foram preenchidas!");
